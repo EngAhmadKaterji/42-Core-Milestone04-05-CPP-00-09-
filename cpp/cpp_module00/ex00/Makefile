@@ -1,0 +1,51 @@
+# Compiler and flags
+CXX = g++
+CXXFLAGS = -Wall -Wextra -Werror
+
+# Name of the executable
+NAME = megaphone
+
+# Source files
+SRCS = megaphone.cpp
+
+# Object files
+OBJS = $(SRCS:.cpp=.o)
+
+# Colors and effects
+RESET = \033[0m
+BOLD = \033[1m
+CYAN = \033[36m
+GREEN = \033[32m
+YELLOW = \033[33m
+
+# Rules
+all: header $(NAME)
+
+header:
+	@echo "$(CYAN)=============================$(RESET)"
+	@echo "$(CYAN)=  $(BOLD)Compiling Megaphone...   $(RESET)$(CYAN)=$(RESET)"
+	@echo "$(CYAN)=============================$(RESET)"
+
+$(NAME): $(OBJS)
+	@echo "$(YELLOW)Linking objects...$(RESET)"
+	@$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS)
+	@echo "$(GREEN)Compilation complete!$(RESET)"
+	@echo "$(GREEN)Executable: $(BOLD)$(NAME)$(RESET)"
+
+%.o: %.cpp
+	@echo "$(YELLOW)Compiling $<...$(RESET)"
+	@$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	@echo "$(YELLOW)Cleaning object files...$(RESET)"
+	@rm -f $(OBJS)
+	@echo "$(GREEN)Clean complete!$(RESET)"
+
+fclean: clean
+	@echo "$(YELLOW)Removing executable...$(RESET)"
+	@rm -f $(NAME)
+	@echo "$(GREEN)Full clean complete!$(RESET)"
+
+re: fclean all
+
+.PHONY: all header clean fclean re
